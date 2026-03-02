@@ -22,14 +22,20 @@ const register = [
     async (req, res, next) => {
         try {
             const { name, email, password } = req.body;
+            console.log(`📝 Registering user: ${email}`);
 
             const existingUser = await User.findOne({ email });
             if (existingUser) {
+                console.log(`❌ Email already exists: ${email}`);
                 return res.status(400).json({ success: false, message: 'Email already registered' });
             }
 
+            console.log(`💾 Saving user to MongoDB: ${email}`);
             const user = await User.create({ name, email, password });
+            console.log(`✅ User saved: ${user._id}`);
+
             const token = generateToken(user._id);
+            console.log(`🔑 Token generated for: ${email}`);
 
             res.status(201).json({
                 success: true,

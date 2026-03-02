@@ -3,8 +3,8 @@ const serverless = require('serverless-http');
 const connectDB = require('../src/config/db');
 const app = require('../src/app');
 
-// Connect Database once per lambda execution
-connectDB();
+// Database connection is now handled inside the handler for better serverless reliability
+// connectDB();
 
 const handlerApp = express();
 handlerApp.use('/', app);
