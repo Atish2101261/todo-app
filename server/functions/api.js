@@ -7,10 +7,12 @@ const app = require('../src/app');
 connectDB();
 
 const handlerApp = express();
-
-// Instead of putting everything under `/.netlify/functions`,
-// and since the `netlify.toml` redirects `/api/*` to `/.netlify/functions/api/:splat`
-// The handler needs to just run the `app` natively. `serverless-http` handles the pathing.
 handlerApp.use('/', app);
 
-module.exports.handler = serverless(handlerApp);
+const handler = serverless(handlerApp);
+
+module.exports.handler = async (event, context) => {
+    // Ensure DB is connected
+    await connectDB();
+    return await handler(event, context);
+};
