@@ -8,9 +8,9 @@ connectDB();
 
 const handlerApp = express();
 
-// The original Express app expects '/api/...'
-// The incoming request path on Netlify functions will be '/.netlify/functions/api/...'
-// So we mount our original 'app' under '/.netlify/functions'
-handlerApp.use('/.netlify/functions', app);
+// Instead of putting everything under `/.netlify/functions`,
+// and since the `netlify.toml` redirects `/api/*` to `/.netlify/functions/api/:splat`
+// The handler needs to just run the `app` natively. `serverless-http` handles the pathing.
+handlerApp.use('/', app);
 
 module.exports.handler = serverless(handlerApp);
