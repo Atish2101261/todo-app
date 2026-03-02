@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:5000/api',
+    baseURL: import.meta.env.VITE_API_URL || 'https://mern-todo-atish-app.netlify.app/api',
     headers: { 'Content-Type': 'application/json' },
 });
+
 
 // Attach JWT token to every request
 API.interceptors.request.use((config) => {
